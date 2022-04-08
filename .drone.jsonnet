@@ -19,7 +19,7 @@ local slack_tm_eng_notification(webhook, step_name, message_file, depends_on) = 
   "commands": [
     "echo Trying to revert ${DRONE_COMMIT_AFTER} >> $${FILE_PATH}",
     "[[ -f $${FILE_PATH} ]] && echo 'File exists: $${FILE_PATH}' | cat $${FILE_PATH} || echo 'File does not exists'",
-    "[[ -f $${FILE_PATH} ]] && cat $${FILE_PATH}",
+    "[[ -f $${FILE_PATH} ]] && cat $FILE_PATH",
   ],
   "depends_on": depends_on
 };
