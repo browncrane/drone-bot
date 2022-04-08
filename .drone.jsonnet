@@ -55,7 +55,7 @@ local auto_revert(branch, message_file, depends_on) = {
       "name": "e2e_test_staging",
       "image": DRONE_BASE_IMAGE,
       "commands": [
-          "sleep 5 && exit 1",
+          "sleep 5 && exit 0",
       ],
       "depends_on": ["pull_drone_base"],
     },     
