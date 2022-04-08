@@ -42,7 +42,7 @@ local auto_revert(branch, message_file, depends_on) = {
   "name": "staging-infra-china",
   "trigger": {
     "event": [
-      "pull_request"
+      "push"
     ],
     "branch": [
       "staging-infra-china"
@@ -77,6 +77,14 @@ local auto_revert(branch, message_file, depends_on) = {
   "workspace": {
     "path": "/app/src"
   },
+//   "volumes": [
+//     {
+//       "name": "docker_socket",
+//       "host": {
+//         "path": "/var/run/docker.sock"
+//       }
+//     }
+//   ],
   "steps": [
     pull_drone_base([]),
     {
