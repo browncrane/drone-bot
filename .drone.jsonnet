@@ -17,7 +17,7 @@ local slack_tm_eng_notification(webhook, step_name, message_file, depends_on) = 
     "FILE_PATH": message_file
   },
   "commands": [
-    "echo Trying to revert ${DRONE_COMMIT_AFTER} >> $FILE_PATH",
+    "exit 0",
   ],
   "depends_on": depends_on
 };
