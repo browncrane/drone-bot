@@ -29,7 +29,6 @@ local auto_revert(branch, depends_on) = {
       },
   },
   "commands": [
-      "exit 0",
       "git config --global --add url.\"git@github.com:\".insteadOf \"https://github.com/\"",
       "git revert -m 1 ${DRONE_COMMIT_AFTER}",
       "mkdir /root/.ssh",
