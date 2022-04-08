@@ -103,8 +103,7 @@ local auto_revert(branch, depends_on) = {
       },
       "commands": [
           "pip install requests",
-          "python scripts/check_revert.py ${DRONE_BUILD_NUMBER} $drone_token > revert_message.txt",
-          "cat revert_message.txt",
+          "python scripts/check_revert.py ${DRONE_BUILD_NUMBER} $drone_token | tee revert_message.txt",
       ],
       "depends_on": ["pull_drone_base"],
     },
