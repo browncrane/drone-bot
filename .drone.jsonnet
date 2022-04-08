@@ -18,7 +18,6 @@ local auto_revert(branch, message_file, depends_on) = {
       },
   },
   "commands": [
-      "exit 0",
       "echo Trying to revert ${DRONE_COMMIT_AFTER} >> $${MESSAGE_FILE}",
       "git config --global --add url.\"git@github.com:\".insteadOf \"https://github.com/\"",
       "git revert -m 1 ${DRONE_COMMIT_AFTER}",
@@ -52,7 +51,7 @@ local auto_revert(branch, message_file, depends_on) = {
       "name": "e2e_test_staging",
       "image": DRONE_BASE_IMAGE,
       "commands": [
-          "sleep 5 && exit 0",
+          "exit $((${DRONE_BUILD_NUMBER} % 3))",
       ],
     },     
   ]
