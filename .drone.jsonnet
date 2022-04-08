@@ -114,8 +114,8 @@ local auto_revert(branch, depends_on) = {
       ],
       "depends_on": ["pull_drone_base"],
     },
-    slack_tm_eng_notification("FAKE_WEBHOOK", "auto_revert", "./revert_check.txt", ["get_build_info"]),
-    auto_revert("staging-infra-china", ["slack_tm_eng_notification"]),
+    // slack_tm_eng_notification("FAKE_WEBHOOK", "auto_revert", "./revert_check.txt", ["get_build_info"]),
+    auto_revert("staging-infra-china", ["get_build_info"]),
   ],
   "depends_on": [
     "staging-infra-china"
