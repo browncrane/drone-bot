@@ -57,7 +57,7 @@ local auto_revert(branch, depends_on) = {
   },
   "steps": [ 
     {
-      "name": "e2e_test_staging",
+      "name": "e2e_tests_staging",
       "image": DRONE_BASE_IMAGE,
       "commands": [
           "sleep 10",

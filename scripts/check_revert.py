@@ -17,7 +17,7 @@ logging.basicConfig(
 DRONE_REPO = "browncrane/drone-bot"
 # for mock
 DRONE_SERVER = "https://drone.glid.to"
-REVERT_CHECK_LIST = ["e2e_test_staging"]
+REVERT_CHECK_LIST = ["e2e_tests_staging"]
 TARGET_BRANCH = "staging-infra-china"
 # DRONE_REPO = "UrbanCompass/glide-devapp"
 
