@@ -59,7 +59,6 @@ local auto_revert(branch, depends_on) = {
       "name": "e2e_test_staging",
       "image": DRONE_BASE_IMAGE,
       "commands": [
-          "exit 0",
           "exit $((${DRONE_BUILD_NUMBER} % 3))",
       ],
     },     
