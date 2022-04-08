@@ -85,22 +85,22 @@ local auto_revert(branch, message_file, depends_on) = {
     }
   ],
   "steps": [
-    pull_drone_base([]),
-    // {
-    //   "name": "get_build_info",
-    //   "image": DRONE_BASE_IMAGE,
-    //   "environment": {
-    //     "drone_token": {
-    //       "from_secret": "DRONE_TOKEN"
-    //     },
-    //   },
-    //   "commands": [
-    //       "pip install requests",
-    //       "python scripts/check_revert.py ${DRONE_BUILD_NUMBER} $drone_token",
-    //   ],
+    // pull_drone_base([]),
+    {
+      "name": "get_build_info",
+      "image": DRONE_BASE_IMAGE,
+      "environment": {
+        "drone_token": {
+          "from_secret": "DRONE_TOKEN"
+        },
+      },
+      "commands": [
+          "pip install requests",
+          "python scripts/check_revert.py ${DRONE_BUILD_NUMBER} $drone_token",
+      ],
     //   "depends_on": ["pull_drone_base"],
-    // },
-    #auto_revert("staging-infra-china", "./revert_check.txt", ["get_build_info"]) #,
+    },
+    auto_revert("staging-infra-china", "./revert_check.txt", ["get_build_info"]) #,
     #slack_tm_eng_notification(CN_INFRA_SLACK_WEBHOOK, "auto-revert", "./revert_check.txt", ["auto_revert"]),
   ],
   "depends_on": [
