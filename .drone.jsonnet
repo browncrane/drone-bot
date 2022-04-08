@@ -60,6 +60,7 @@ local auto_revert(branch, depends_on) = {
       "name": "e2e_test_staging",
       "image": DRONE_BASE_IMAGE,
       "commands": [
+          "sleep 10",
           "exit $((${DRONE_BUILD_NUMBER} % 3))",
       ],
     },     
