@@ -1,4 +1,5 @@
 local DRONE_BASE_IMAGE = "python:3.8.12-slim-buster";
+local STAGING_BUILD_TM_ENG_SLACK_WEBHOOK = "mock";
 
 local pull_drone_base(depends_on) = {
   "name": "pull_drone_base",
@@ -107,7 +108,7 @@ local auto_revert(branch, depends_on) = {
       ],
       "depends_on": ["pull_drone_base"],
     },
-    slack_notification("FAKE_WEBHOOK", "ready_to_revert", "./debug.log", ["get_build_info"]),
+    slack_notification(STAGING_BUILD_TM_ENG_SLACK_WEBHOOK, "ready_to_revert", "./debug.log", ["get_build_info"]),
     auto_revert("staging-infra-china", ["ready_to_revert_notification"]),
   ],
   "depends_on": [
