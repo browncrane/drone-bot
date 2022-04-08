@@ -41,7 +41,7 @@ local auto_revert(branch, message_file, depends_on) = {
   "name": "staging-infra-china",
   "trigger": {
     "event": [
-      "pull_request"
+      "push"
     ],
     "branch": [
       "staging-infra-china"
@@ -76,6 +76,14 @@ local auto_revert(branch, message_file, depends_on) = {
   "workspace": {
     "path": "/app/src"
   },
+//   "volumes": [
+//     {
+//       "name": "docker_socket",
+//       "host": {
+//         "path": "/var/run/docker.sock"
+//       }
+//     }
+//   ],
   "steps": [
     pull_drone_base([]),
     {
@@ -92,8 +100,8 @@ local auto_revert(branch, message_file, depends_on) = {
       ],
       "depends_on": ["pull_drone_base"],
     },
-    auto_revert("staging-infra-china", "./revert_check.txt", ["get_build_info"]) #,
-    #slack_tm_eng_notification(CN_INFRA_SLACK_WEBHOOK, "auto-revert", "./revert_check.txt", ["auto_revert"]),
+    auto_revert("staging-infra-china", "./revert_check.txt", ["get_build_info"]) //,
+    // slack_tm_eng_notification(CN_INFRA_SLACK_WEBHOOK, "auto-revert", "./revert_check.txt", ["auto_revert"]),
   ],
   "depends_on": [
     "staging-infra-china"
