@@ -1,8 +1,18 @@
 # exit(78)  ref: https://discourse.drone.io/t/how-to-exit-a-pipeline-early-without-failing/3951
 
+import logging
 import sys
 
 import requests
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("debug.log"),
+        logging.StreamHandler()
+    ]
+)
 
 DRONE_REPO = "browncrane/drone-bot"
 # for mock
@@ -10,6 +20,7 @@ DRONE_SERVER = "https://drone.glid.to"
 REVERT_CHECK_LIST = ["e2e_test_staging"]
 TARGET_BRANCH = "staging-infra-china"
 # DRONE_REPO = "UrbanCompass/glide-devapp"
+
 
 def check_revert(build_num, token):
     drone_headers = {"Authorization": f"Bearer {token}"}
@@ -22,13 +33,13 @@ def check_revert(build_num, token):
     ).json()
 
     if is_previous_related_build_fail(build_info_list, build_info.get("started")):
-        print("previous related build fail, wouldn't revert")
+        logging.info("previous related build fail, wouldn't revert")
         exit(78)
 
     if check_status(build_info):
-        print("fail step in revert check list, starting revert")
+        logging.info("fail step in revert check list, starting revert")
         exit(0)
-    print("No fail in revert check list, wouldn't revert")
+    logging.info("No fail in revert check list, wouldn't revert")
     exit(78)
 
 

@@ -29,6 +29,7 @@ local auto_revert(branch, depends_on) = {
       },
   },
   "commands": [
+      "exit 0",
       "git config --global --add url.\"git@github.com:\".insteadOf \"https://github.com/\"",
       "git revert -m 1 ${DRONE_COMMIT_AFTER}",
       "mkdir /root/.ssh",
@@ -103,7 +104,7 @@ local auto_revert(branch, depends_on) = {
       },
       "commands": [
           "pip install requests",
-          "python scripts/check_revert.py ${DRONE_BUILD_NUMBER} $drone_token | tee revert_message.txt",
+          "python scripts/check_revert.py ${DRONE_BUILD_NUMBER} $drone_token",
       ],
       "depends_on": ["pull_drone_base"],
     },
