@@ -9,18 +9,16 @@ local pull_drone_base(depends_on) = {
   "depends_on": depends_on
 };
 
-#above for mock
-local slack_auto_revert_notification(webhook, depends_on) = {
-  "name": "slack_auto_revert_notification",
+local slack_notification(webhook, step_name, message_file, depends_on) = {
+  "name": step_name + "_notification",
   "image": DRONE_BASE_IMAGE,
-  "environment": {
-    "SLACK_WEBHOOK": webhook,
-  },
   "commands": [
-    "exit 0",
+    "cat "+ message_file + "",
   ],
   "depends_on": depends_on
 };
+
+#above for mock
 
 local auto_revert(branch, depends_on) = {
   "name": "auto_revert",
@@ -106,11 +104,11 @@ local auto_revert(branch, depends_on) = {
       },
       "commands": [
           "pip install requests",
-          "python scripts/check_revert.py ${DRONE_BUILD_NUMBER} $drone_token",
+          "python scripts/check_revert.py ${DRONE_BUILD_NUMBER} $drone_token > revert_message.txt",
       ],
       "depends_on": ["pull_drone_base"],
     },
-    slack_auto_revert_notification("FAKE_WEB_HOOK", ["get_build_info"]),
+    slack_notification("FAKE_WEBHOOK", "ready to revert", "./revert_message.txt", ["get_build_info"]),
     auto_revert("staging-infra-china", ["slack_auto_revert_notification"]),
   ],
   "depends_on": [
