@@ -52,6 +52,8 @@ def is_previous_related_build_fail(build_info_list, due_time):
             if 0 <= current_diff < minimal_time_diff:
                 minimal_time_diff = current_diff
                 status = build_info.get("status")
+                logging.info(f'finish time {build_info.get("finished")}')
+                logging.info(f'build number {build_info.get("number")}')
     return status == "failure"
 
 
