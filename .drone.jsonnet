@@ -1,4 +1,4 @@
-local DRONE_BASE_IMAGE = "python:3.8.12";
+local DRONE_BASE_IMAGE = "python:3.8.12-slim-buster";
 local pull_drone_base(depends_on) = {
   "name": "pull_drone_base",
   "image": DRONE_BASE_IMAGE,
@@ -47,9 +47,6 @@ local auto_revert(branch, message_file, depends_on) = {
       "staging-infra-china"
     ],
   },
-  "workspace": {
-    "path": "/app/src"
-  },
   "steps": [ 
     {
       "name": "e2e_test_staging",
@@ -57,7 +54,6 @@ local auto_revert(branch, message_file, depends_on) = {
       "commands": [
           "sleep 5 && exit 0",
       ],
-      "depends_on": ["pull_drone_base"],
     },     
   ]
 },

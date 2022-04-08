@@ -4,11 +4,12 @@ import sys
 
 import requests
 
+DRONE_REPO = "browncrane/drone-bot"
+# for mock
 DRONE_SERVER = "https://drone.glid.to"
-DRONE_REPO = "UrbanCompass/glide-devapp"
 REVERT_CHECK_LIST = ["e2e_test_staging"]
 TARGET_BRANCH = "staging-infra-china"
-
+# DRONE_REPO = "UrbanCompass/glide-devapp"
 
 def check_revert(build_num, token):
     drone_headers = {"Authorization": f"Bearer {token}"}
