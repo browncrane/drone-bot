@@ -26,7 +26,7 @@ def check_revert(build_num, token):
         exit(78)
 
     if check_status(build_info):
-        print("fail in revert check list, starting revert")
+        print("fail step in revert check list, starting revert")
         exit(0)
     print("No fail in revert check list, wouldn't revert")
     exit(78)

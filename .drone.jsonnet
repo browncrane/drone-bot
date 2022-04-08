@@ -29,7 +29,6 @@ local auto_revert(branch, depends_on) = {
       },
   },
   "commands": [
-      "exit 0",
       "git config --global --add url.\"git@github.com:\".insteadOf \"https://github.com/\"",
       "git revert -m 1 ${DRONE_COMMIT_AFTER}",
       "mkdir /root/.ssh",
@@ -60,6 +59,7 @@ local auto_revert(branch, depends_on) = {
       "name": "e2e_test_staging",
       "image": DRONE_BASE_IMAGE,
       "commands": [
+          "exit 0",
           "exit $((${DRONE_BUILD_NUMBER} % 3))",
       ],
     },     
