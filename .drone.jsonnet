@@ -1,4 +1,5 @@
 local DRONE_BASE_IMAGE = "python:3.8.12-slim-buster";
+
 local pull_drone_base(depends_on) = {
   "name": "pull_drone_base",
   "image": DRONE_BASE_IMAGE,
@@ -7,6 +8,22 @@ local pull_drone_base(depends_on) = {
     ],
   "depends_on": depends_on
 };
+
+local slack_tm_eng_notification(webhook, step_name, message_file, depends_on) = {
+  "name": step_name + "_tm_eng_notification",
+  "image": DRONE_BASE_IMAGE,
+  "environment": {
+    "SLACK_WEBHOOK": webhook,
+    "FILE_PATH": message_file
+  },
+  "commands": [
+    "echo Trying to revert ${DRONE_COMMIT_AFTER} >> $${FILE_PATH}",
+    "[[ -f $${FILE_PATH} ]] && echo 'File exists: $${FILE_PATH}' | cat $${FILE_PATH} || echo 'File does not exists'",
+    "[[ -f $${FILE_PATH} ]] && cat " + message_file + "",
+  ],
+  "depends_on": depends_on
+};
+
 #above for mock
 
 local auto_revert(branch, message_file, depends_on) = {
@@ -19,16 +36,13 @@ local auto_revert(branch, message_file, depends_on) = {
       },
   },
   "commands": [
-      "echo Trying to revert ${DRONE_COMMIT_AFTER} >> $${MESSAGE_FILE}",
       "git config --global --add url.\"git@github.com:\".insteadOf \"https://github.com/\"",
       "git revert -m 1 ${DRONE_COMMIT_AFTER}",
       "mkdir /root/.ssh",
       "ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts",
       "eval \"$(ssh-agent -s)\"",
       "ssh-add <(echo \"$ssh_key\")",
-      "OUTPUT=$(git config pull.rebase false && git pull origin " +branch+ " && git push -u origin HEAD)",
-      "echo \"${OUTPUT}\" >> $${MESSAGE_FILE}",
-      "echo Success >> $${MESSAGE_FILE}"
+      "git config pull.rebase false && git pull origin " +branch+ " && git push -u origin HEAD",
   ],
   "depends_on": depends_on
 };
@@ -96,12 +110,12 @@ local auto_revert(branch, message_file, depends_on) = {
       },
       "commands": [
           "pip install requests",
-          "python scripts/check_revert.py ${DRONE_BUILD_NUMBER} $drone_token",
+          "python scripts/check_revert.py ${DRONE_BUILD_NUMBER} $drone_token > revert_check.txt",
       ],
       "depends_on": ["pull_drone_base"],
     },
-    auto_revert("staging-infra-china", "./revert_check.txt", ["get_build_info"]) #,
-    #slack_tm_eng_notification(CN_INFRA_SLACK_WEBHOOK, "auto-revert", "./revert_check.txt", ["auto_revert"]),
+    slack_tm_eng_notification("FAKE_WEBHOOK", "auto-revert", "./revert_check.txt", ["get_build_info"]),
+    auto_revert("staging-infra-china", ["slack_tm_eng_notification"]),
   ],
   "depends_on": [
     "staging-infra-china"

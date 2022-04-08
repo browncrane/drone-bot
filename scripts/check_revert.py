@@ -38,7 +38,7 @@ def is_previous_related_build_fail(build_info_list, due_time):
     for build_info in build_info_list:
         if build_info.get("target") == TARGET_BRANCH and build_is_finished(build_info):
             current_diff = due_time - build_info.get("finished")
-            if 0 < current_diff < minimal_time_diff:
+            if 0 <= current_diff < minimal_time_diff:
                 minimal_time_diff = current_diff
                 status = build_info.get("status")
     return status == "failure"
