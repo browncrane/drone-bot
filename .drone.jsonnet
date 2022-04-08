@@ -4,7 +4,8 @@ local pull_drone_base(depends_on) = {
   "image": DRONE_BASE_IMAGE,
     "commands": [
       "sleep 3", 
-    ]
+    ],
+  "depends_on": depends_on
 };
 #above for mock
 
