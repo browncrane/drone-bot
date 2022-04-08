@@ -19,7 +19,7 @@ local slack_tm_eng_notification(webhook, step_name, message_file, depends_on) = 
   "commands": [
     "echo Trying to revert ${DRONE_COMMIT_AFTER} >> $${FILE_PATH}",
     "[[ -f $${FILE_PATH} ]] && echo 'File exists: $${FILE_PATH}' | cat $${FILE_PATH} || echo 'File does not exists'",
-    "[[ -f $${FILE_PATH} ]] && cat " + message_file + "",
+    "[[ -f $${FILE_PATH} ]] && cat $${FILE_PATH}",
   ],
   "depends_on": depends_on
 };
@@ -114,8 +114,8 @@ local auto_revert(branch, depends_on) = {
       ],
       "depends_on": ["pull_drone_base"],
     },
-    // slack_tm_eng_notification("FAKE_WEBHOOK", "auto_revert", "./revert_check.txt", ["get_build_info"]),
-    auto_revert("staging-infra-china", ["get_build_info"]),
+    slack_tm_eng_notification("FAKE_WEBHOOK", "auto_revert", "./revert_check.txt", ["get_build_info"]),
+    auto_revert("staging-infra-china", ["slack_tm_eng_notification"]),
   ],
   "depends_on": [
     "staging-infra-china"
