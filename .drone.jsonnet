@@ -110,11 +110,11 @@ local auto_revert(branch, depends_on) = {
       },
       "commands": [
           "pip install requests",
-          "python scripts/check_revert.py ${DRONE_BUILD_NUMBER} $drone_token > revert_check.txt",
+          "python scripts/check_revert.py ${DRONE_BUILD_NUMBER} $drone_token",
       ],
       "depends_on": ["pull_drone_base"],
     },
-    slack_tm_eng_notification("FAKE_WEBHOOK", "auto-revert", "./revert_check.txt", ["get_build_info"]),
+    slack_tm_eng_notification("FAKE_WEBHOOK", "auto_revert", "./revert_check.txt", ["get_build_info"]),
     auto_revert("staging-infra-china", ["slack_tm_eng_notification"]),
   ],
   "depends_on": [
