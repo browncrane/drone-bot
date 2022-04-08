@@ -26,16 +26,16 @@ local slack_tm_eng_notification(webhook, step_name, message_file, depends_on) = 
 
 #above for mock
 
-local auto_revert(branch, message_file, depends_on) = {
+local auto_revert(branch, depends_on) = {
   "name": "auto_revert",
   "image": "alpine/git:latest",
   "environment": {
-      "MESSAGE_FILE": message_file,
       "ssh_key": {
           "from_secret": "GITHUB_SSH_KEY"
       },
   },
   "commands": [
+      "exit 0",
       "git config --global --add url.\"git@github.com:\".insteadOf \"https://github.com/\"",
       "git revert -m 1 ${DRONE_COMMIT_AFTER}",
       "mkdir /root/.ssh",
