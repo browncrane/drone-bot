@@ -1,9 +1,11 @@
 name: mypy
 
-on: [push, pull_request]
-  branches:
-    - 'shihe/**'
-    - test
+on:
+  push:
+  pull_request:
+    branches:
+      - 'shihe/**'
+      - test
 
 jobs:
   build:
