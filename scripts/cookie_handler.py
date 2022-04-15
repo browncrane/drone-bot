@@ -1,14 +1,6 @@
 from typing import List  # Python 3.8 and earlier
 
 
-def cookie_handler_print(cookie):
-    1 + 'x'
-
-
-def cookie_handler(cookie) -> None:
-    print(1)
-
-
 def greet_all(names: List[str]) -> None:
     for name in names:
         print('Hello ' + name)
@@ -19,6 +11,7 @@ ages = [10, 20, 30]
 
 greet_all(names)   # Ok!
 # greet_all(ages)    # Error due to incompatible types
+
 
 def stars(*args: int, **kwargs: float) -> None:
     # 'args' has type 'tuple[int, ...]' (a tuple of ints)
