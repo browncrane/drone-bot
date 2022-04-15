@@ -21,4 +21,4 @@ jobs:
         pip install mypy
     - name: Analysing the code with mypy
       run: |
-        mypy @scripts/path_to_check.txt
+        mypy --any-exprs-report
