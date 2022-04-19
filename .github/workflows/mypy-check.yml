@@ -29,4 +29,4 @@ jobs:
     - name: Analysing the code with mypy
       if: steps.changed-files-specific.outputs.any_changed == 'true'
       run: | 
-        mypy step.changed-files-specific.outputs.all_changed_files --config-file .github/mypy/mypy.ini
+        mypy ${{ step.changed-files-specific.outputs.all_changed_files }} --config-file .github/mypy/mypy.ini

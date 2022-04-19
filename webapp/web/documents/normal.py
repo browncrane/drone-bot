@@ -6,7 +6,7 @@ def cookie_handler_print(cookie):
 
 
 def cookie_handler(cookie) -> None:
-    print(1)
+    print(2)
 
 
 def greet_all(names: List[str]) -> None:
