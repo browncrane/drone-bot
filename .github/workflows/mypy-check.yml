@@ -20,10 +20,13 @@ jobs:
         ls
         python -m pip install --upgrade pip
         pip install mypy
-    - name: Analysing the code with mypy
+    - name: check changed files
       uses: tj-actions/changed-files@v18.7
+      id: changed-files-specific
       with: 
         files_from_source_file:
           .github/mypy/path_to_check.txt
+    - name: Analysing the code with mypy
+      if: steps.changed-files-specific.outputs.any_changed == 'true'
       run: | 
         mypy @.github/mypy/path_to_check.txt --config-file .github/mypy/mypy.ini
