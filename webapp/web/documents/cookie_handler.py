@@ -9,7 +9,7 @@ def greet_all(names: List[str]) -> None:
 
 
 names = ["Alice", "Bob", "Charlie"]
-ages = [10, 30, 30]
+ages = [10, 30, 40]
 
 greet_all(names)   # Ok!
 # greet_all(ages)    # Error due to incompatible types
