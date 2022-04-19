@@ -21,5 +21,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install mypy
     - name: Analysing the code with mypy
+      uses: tj-actions/changed-files@v18.7
+      with: 
+        files_from_source_file:
+          .github/mypy/path_to_check.txt
       run: | 
-        mypy @.github/mypy/path_to_check.txt --config-file scripts/mypy.ini
+        mypy @.github/mypy/path_to_check.txt --config-file .github/mypy/mypy.ini
