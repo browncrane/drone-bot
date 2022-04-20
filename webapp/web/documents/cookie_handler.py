@@ -1,6 +1,6 @@
 from typing import List  # Python 3.8 and earlier
 from faker import Faker
-import asdf
+import asdfg
 
 def greet_all(names: List[str]) -> None:
     fake = Faker('it_IT')
