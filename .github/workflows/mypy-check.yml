@@ -28,7 +28,7 @@ jobs:
     - name: Analyzing the code with mypy
       if: steps.changed-files-specific.outputs.any_changed == 'true' # only file changed will trigger Analyzing
       run: | 
-        mypy ${{ steps.changed-files-specific.outputs.all_changed_files }} --config-file mypy.ini
+        mypy ${{ steps.changed-files-specific.outputs.all_changed_files }} --config-file mypy.ini; cat any-exprs.txt
     - name: show mypy report
       if: steps.changed-files-specific.outputs.any_changed == 'true' # only file changed will trigger report
       run: |
