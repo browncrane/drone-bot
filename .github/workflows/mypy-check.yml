@@ -9,6 +9,7 @@ on:
 jobs:
   my-py-check:
     runs-on: ubuntu-latest
+    allow-failure: true
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.8
@@ -26,7 +27,6 @@ jobs:
         files_from_source_file:  # source file(s) used to populate the files input
           .github/mypy/path_to_check.txt
     - name: Analyzing the code with mypy
-      allow-failure: true
       if: steps.changed-files-specific.outputs.any_changed == 'true' # only file changed will trigger Analyzing
       run: | 
         mypy ${{ steps.changed-files-specific.outputs.all_changed_files }} --config-file mypy.ini; cat any-exprs.txt
