@@ -25,12 +25,6 @@ jobs:
       with: 
         files_from_source_file:  # source file(s) used to populate the files input
           .github/mypy/path_to_check.txt
-    - name: Analyzing the code with mypy
-      id: mypy-check
-      continue-on-error: true
-      if: steps.changed-files-specific.outputs.any_changed == 'true' # only file changed will trigger Analyzing
-      run: | 
-        mypy ${{ steps.changed-files-specific.outputs.all_changed_files }} --config-file mypy.ini
     - name: generate mypy report # report for path_to_check rather than changed files
       continue-on-error: true
       run: |
@@ -38,3 +32,8 @@ jobs:
     - name: show report
       run: |
         cat any-exprs.txt
+    - name: Analyzing the code with mypy
+      id: mypy-check
+      if: steps.changed-files-specific.outputs.any_changed == 'true' # only file changed will trigger Analyzing
+      run: | 
+        mypy ${{ steps.changed-files-specific.outputs.all_changed_files }} --config-file mypy.ini
