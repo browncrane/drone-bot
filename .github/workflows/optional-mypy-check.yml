@@ -1,4 +1,4 @@
-name: mypy-newcheck
+name: mypy-name-test
 
 on:
   push:
