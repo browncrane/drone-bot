@@ -1,6 +1,7 @@
 name: mypy-newcheck
 
 on:
+  push:
   pull_request_target:
     types:
       - opened
