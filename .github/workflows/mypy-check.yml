@@ -1,13 +1,12 @@
-name: mypy
+name: [experiment] mypy
 
 on:
-  push:
   pull_request:
     branches:
       - 'development'
 
 jobs:
-  my-py-check:
+  optional-static-type-checker:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
