@@ -1,4 +1,4 @@
-name: mypy-newtest
+name: mypy-newcheck
 
 on:
   pull_request_target:
