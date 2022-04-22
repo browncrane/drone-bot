@@ -1,7 +1,7 @@
 name: mypy-newcheck
 
 on:
-  pull_request_target:
+  pull_request:
     types:
       - opened
       - reopened
@@ -24,7 +24,7 @@ jobs:
         pip install mypy
     - name: check changed files
       uses: tj-actions/changed-files@v18.7 # ref: https://github.com/tj-actions/changed-files
-      id: changed-files-specific # this id can be used below
+      id: changed-files-specific # this ID can be used below
       with: 
         files_from_source_file:  # source file(s) used to populate the files input
           .github/mypy/path_to_check.txt
