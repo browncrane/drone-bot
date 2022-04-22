@@ -1,9 +1,6 @@
 name: mypy[experiments]
 
 on:
-  push:
-    branches:
-      - 'development'
   pull_request:
     branches:
       - 'development'
