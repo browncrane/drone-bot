@@ -39,4 +39,4 @@ jobs:
       id: mypy-check
       if: steps.changed-files-specific.outputs.any_changed == 'true' # only file changed will trigger Analyzing
       run: | 
-        mypy ${{ steps.changed-files-specific.outputs.all_changed_files }} --config-file mypy.ini
+        mypy ${{ steps.changed-files-specific.outputs.all_changed_files }}
