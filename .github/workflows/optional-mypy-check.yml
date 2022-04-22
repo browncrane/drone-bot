@@ -1,4 +1,4 @@
-name: mypy-name-test
+name: mypy-name-test-2
 
 on:
   push:
