@@ -1,4 +1,4 @@
-name: mypy
+name: mypy[experiments]
 
 on:
   pull_request_target:
