@@ -1,0 +1,33 @@
+name: pr-target-branch-broken-check
+on:
+  push:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    branches: 
+      - development
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          version: 12
+      - uses: nick-fields/retry@v2
+        with:
+          timeout_seconds: 45
+          max_attempts: 3
+          retry_on: error
+          command: |
+          exit 1
+          npm install --registry=https://registry.npmjs.org @actions/github
+      - uses: nick-fields/retry@v2
+        with:
+          timeout_seconds: 45
+          max_attempts: 3
+          retry_on: error
+          command: npm install --registry=https://registry.npmjs.org @actions/core
