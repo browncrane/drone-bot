@@ -30,6 +30,8 @@ jobs:
       continue-on-error: true
       run: |
         mypy @.github/mypy/path_to_check.txt
+    - name: move report to one dir
+      run: |
         mkdir ${{ github.run_id }}
         mv html index.html mypy-html.css ${{ github.run_id }}
         cat ${{github.run_id}}/index.html
