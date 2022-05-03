@@ -1,11 +1,7 @@
-name: mypy-test-pr
+name: mypy[experiments]
 
 on:
   pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
     branches:
       - development
 
@@ -22,19 +18,28 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install mypy
+        pip install lxml
     - name: check changed files
       uses: tj-actions/changed-files@v18.7 # ref: https://github.com/tj-actions/changed-files
-      id: changed-files-specific # this ID can be used below
+      id: changed-files-specific # this id can be used below
       with: 
         files_from_source_file:  # source file(s) used to populate the files input
           .github/mypy/path_to_check.txt
     - name: generate mypy report # report for path_to_check rather than changed files
+      id: generate-report
       continue-on-error: true
       run: |
         mypy @.github/mypy/path_to_check.txt
-    - name: show report
-      run: |
-        cat any-exprs.txt
+        mkdir ${{ github.run_id }}
+        mv html index.html mypy-html.css ${{ github.run_id }}
+        cat ${{github.run_id}}/index.html
+    - name: upload report
+      uses: shallwefootball/s3-upload-action@master
+      with:
+          aws_key_id: ${{ secrets.AWS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          aws_bucket: ${{ secrets.AWS_BUCKET }}
+          source_dir: 'dirname'
     - name: Analyzing the code with mypy
       id: mypy-check
       if: steps.changed-files-specific.outputs.any_changed == 'true' # only file changed will trigger Analyzing
