@@ -34,7 +34,7 @@ jobs:
       id: upload-report
       run: |
         tar -cvzf report.tar.gz index.html mypy-html.css html
-        curl -u admin:$NEXUS_PASSWORD --upload-file report.tar.gz "http://drone.glid.to:8081/repository/glide-artifacts/mypy-report-${GITHUB_RUN_ID}/"
+        curl -u admin:${{secrets.NEXUS_PASSWORD}} --upload-file report.tar.gz "http://drone.glid.to:8081/repository/glide-artifacts/mypy-report-${GITHUB_RUN_ID}/"
     - name: Analyzing the code with mypy
       id: mypy-check
       if: steps.changed-files-specific.outputs.any_changed == 'true' # only file changed will trigger Analyzing
