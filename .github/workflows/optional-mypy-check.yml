@@ -36,7 +36,7 @@ jobs:
         tar -cvzf report.tar.gz index.html mypy-html.css html
         curl -u admin:${{secrets.NEXUS_PASSWORD}} --upload-file report.tar.gz "http://drone.glid.to:8081/repository/glide-artifacts/mypy-report-${GITHUB_RUN_ID}/"
         echo "You can download report from http://drone.glid.to:8081/repository/glide-artifacts/mypy-report-${GITHUB_RUN_ID}/report.tar.gz"
-        echo "www.baidu.com"
+        echo "http://www.baidu.com"
     - name: Analyzing the code with mypy
       id: mypy-check
       if: steps.changed-files-specific.outputs.any_changed == 'true' # only file changed will trigger Analyzing
