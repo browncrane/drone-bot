@@ -30,18 +30,11 @@ jobs:
       continue-on-error: true
       run: |
         mypy @.github/mypy/path_to_check.txt
-    - name: move report to one dir
-      run: |
-        mkdir ${{ github.run_id }}
-        mv html index.html mypy-html.css ${{ github.run_id }}
-        cat ${{github.run_id}}/index.html
     - name: upload report
-      uses: shallwefootball/s3-upload-action@master
-      with:
-          aws_key_id: ${{ secrets.AWS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
-          aws_bucket: ${{ secrets.AWS_BUCKET }}
-          source_dir: 'dirname'
+      id: upload-report
+      run: |
+        tar -cvzf report.tar.gz index.html mypy-html.css html
+        curl -u admin:$NEXUS_PASSWORD --upload-file report.tar.gz "http://drone.glid.to:8081/repository/glide-artifacts/mypy-report-$GITHUB_RUN_ID/"
     - name: Analyzing the code with mypy
       id: mypy-check
       if: steps.changed-files-specific.outputs.any_changed == 'true' # only file changed will trigger Analyzing
