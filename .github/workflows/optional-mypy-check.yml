@@ -35,7 +35,7 @@ jobs:
       run: |
         mkdir report
         mv index.html mypy-html.css html report
-        find report -type f -exec curl -u admin:${{secrets.NEXUS_PASSWORD}} -T {} "http://drone.glid.to:8081/repository/glide-artifacts/mypy-report-${GITHUB_RUN_ID}/{}"
+        find report -type f -exec curl -u admin:${{ secrets.NEXUS_PASSWORD }} -T {} http://drone.glid.to:8081/repository/glide-artifacts/mypy-report-${GITHUB_RUN_ID}/{} \;
         echo "You can read report from below link"
         echo "http://drone.glid.to:8081/repository/glide-artifacts/mypy-report-${GITHUB_RUN_ID}/index.html"
     - name: Analyzing the code with mypy
