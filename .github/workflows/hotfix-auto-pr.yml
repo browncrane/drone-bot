@@ -1,0 +1,31 @@
+name: hotfix-pr-creator
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  hotfix-auto-create-pr:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - uses: nick-fields/retry@v2
+        with:
+          timeout_seconds: 45
+          max_attempts: 3
+          retry_on: error
+          command: npm install --registry=https://registry.npmjs.org @actions/github
+      - uses: nick-fields/retry@v2
+        with:
+          timeout_seconds: 45
+          max_attempts: 3
+          retry_on: error
+          command: npm install --registry=https://registry.npmjs.org axios
+      - run: node -e 'require("./.github/actions/hotfix-helper").autoCreatePr()'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
