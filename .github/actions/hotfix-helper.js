@@ -196,7 +196,8 @@ async function autoMergePr() {
                 owner,
                 repo,
                 pull_number: pr.pull_number
-            }).data
+            })
+            console.log(pr)
             if (pr.changed_files >= 0) {
             console.log("Ready to merge: ", pr.number);
                 exec(`git pull origin ${pr.base.ref}`, execCallback)
