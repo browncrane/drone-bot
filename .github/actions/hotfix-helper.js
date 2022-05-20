@@ -200,6 +200,8 @@ async function autoMergePr() {
             console.log(`Changed files: ${pr.changed_files}`)
             if (pr.changed_files >= 0) {
                 console.log("Ready to merge: ", pr.number);
+                await exec("git config user.email 'action-bot@action'")
+                await exec("git config user.name 'action-bot'")
                 const { stdout1, stderr1 } = await exec(`git checkout -B ${pr.head.ref} && git fetch origin ${pr.head.ref} && git reset --h origin/${pr.head.ref}`)
                 console.log(stdout1)
                 if (stderr1) {
