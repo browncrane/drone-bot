@@ -195,7 +195,7 @@ async function autoMergePr() {
             pr = await octokit.rest.pulls.get({
                 owner,
                 repo,
-                pull_number: pr.pull_number
+                pull_number: pr.number
             })
             console.log(pr)
             if (pr.changed_files >= 0) {
