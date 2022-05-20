@@ -47,7 +47,7 @@ function execCallback(error, stdout, stderr) {
     if (error) {
       console.error(`exec error: ${error}`);
       core.setFailed(error)
-      return;
+      process.exit(-1)
     }
     console.log(`stdout: ${stdout}`);
     console.error(`stderr: ${stderr}`);
@@ -199,12 +199,13 @@ async function autoMergePr() {
             })).data
             console.log(pr)
             if (pr.changed_files >= 0) {
-            console.log("Ready to merge: ", pr.number);
-                exec(`git pull origin ${pr.base.ref}`, execCallback)
-                exec(`git pull origin ${pr.head.ref}`, execCallback)
+                console.log("Ready to merge: ", pr.number);
+                exec(`git fetch origin ${pr.head.ref}`, execCallback)
+                exec(`git checkout origin ${pr.head.ref}`, execCallback)
+                exec(`git fetch origin ${pr.base.ref}`, execCallback)
                 exec(`git checkout ${pr.base.ref}`, execCallback)
-                exec(`git merge ${pr.head.ref}`, execCallback)
-                exec(`git push ${pr.base.ref}`, execCallback)
+                exec(`git merge -m "Hotfix-helper: auto merge" ${pr.head.ref} --allow-unrelated-histories`, execCallback)
+                exec(`git push origin ${pr.base.ref}`, execCallback)
             }
             console.log("Ready to close: ", pr.number);
             const { data: closeResult } = await octokit.rest.pulls.update({
