@@ -192,11 +192,11 @@ async function autoMergePr() {
             await processFailurePr(pr)
         } else if (!existUncomplete && !existFailure) {
             console.log(`Changed files: ${pr.changed_files}`)
-            data: pr = await octokit.rest.pulls.get({
+            data: pr = (await octokit.rest.pulls.get({
                 owner,
                 repo,
                 pull_number: pr.number
-            }).data
+            })).data
             console.log(pr)
             if (pr.changed_files >= 0) {
             console.log("Ready to merge: ", pr.number);
