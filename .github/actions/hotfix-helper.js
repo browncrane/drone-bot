@@ -212,7 +212,7 @@ async function autoMergePr() {
                 if (stderr2) {
                     core.setFailed(stderr2)
                 }
-                const { stdout3, stderr3 } = await exec(`git merge -m "Hotfix-helper: auto merge" ${pr.head.ref} --allow-unrelated-histories`)
+                const { stdout3, stderr3 } = await exec(`git merge --no-ff -m "Hotfix-helper: auto merge" ${pr.head.ref} --allow-unrelated-histories`)
                 console.log(stdout3)
                 if (stderr3) {
                     core.setFailed(stderr3)
