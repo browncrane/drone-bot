@@ -197,11 +197,10 @@ async function autoMergePr() {
                 repo,
                 pull_number: pr.number
             })).data
-            console.log(pr)
             if (pr.changed_files >= 0) {
                 console.log("Ready to merge: ", pr.number);
                 exec(`git fetch origin ${pr.head.ref}`, execCallback)
-                exec(`git checkout origin ${pr.head.ref}`, execCallback)
+                exec(`git checkout ${pr.head.ref}`, execCallback)
                 exec(`git fetch origin ${pr.base.ref}`, execCallback)
                 exec(`git checkout ${pr.base.ref}`, execCallback)
                 exec(`git merge -m "Hotfix-helper: auto merge" ${pr.head.ref} --allow-unrelated-histories`, execCallback)
