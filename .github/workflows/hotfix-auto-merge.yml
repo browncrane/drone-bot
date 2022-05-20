@@ -6,8 +6,6 @@ on:
 jobs:
   hotfix-auto-merge-pr:
     # The type of runner that the job will run on
-    permissions:
-      pull-requests: write
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
