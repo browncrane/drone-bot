@@ -215,7 +215,7 @@ async function autoMergePr() {
                 if (stderr3) {
                     core.setFailed(stderr3)
                 }
-                const { stdout3, stderr3 } = await exec(`git push origin ${pr.base.ref}`)
+                const { stdout4, stderr4 } = await exec(`git push origin ${pr.base.ref}`)
                 console.log(stdout4)
                 if (stderr4) {
                     core.setFailed(stderr4)
