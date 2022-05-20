@@ -1,4 +1,5 @@
-const { exec } = require('node:child_process');
+const util = require('node:util');
+const exec = util.promisify(require('node:child_process').exec);
 const core = require('@actions/core');
 const github = require("@actions/github");
 const axios = require("axios").default;
@@ -191,20 +192,34 @@ async function autoMergePr() {
         if (existFailure) {
             await processFailurePr(pr)
         } else if (!existUncomplete && !existFailure) {
-            console.log(`Changed files: ${pr.changed_files}`)
             data: pr = (await octokit.rest.pulls.get({
                 owner,
                 repo,
                 pull_number: pr.number
             })).data
+            console.log(`Changed files: ${pr.changed_files}`)
             if (pr.changed_files >= 0) {
                 console.log("Ready to merge: ", pr.number);
-                exec(`git fetch origin ${pr.head.ref}`, execCallback)
-                exec(`git checkout ${pr.head.ref}`, execCallback)
-                exec(`git fetch origin ${pr.base.ref}`, execCallback)
-                exec(`git checkout ${pr.base.ref}`, execCallback)
-                exec(`git merge -m "Hotfix-helper: auto merge" ${pr.head.ref} --allow-unrelated-histories`, execCallback)
-                exec(`git push origin ${pr.base.ref}`, execCallback)
+                const { stdout1, stderr1 } = await exec(`git checkout -B ${pr.head.ref} && git fetch origin ${pr.head.ref} && git reset --h origin/${pr.head.ref}`)
+                console.log(stdout1)
+                if (stderr1) {
+                    core.setFailed(stderr1)
+                }
+                const { stdout2, stderr2 } = await exec(`git checkout -B ${pr.base.ref} && git fetch origin ${pr.base.ref} && git reset --h origin/${pr.base.ref}`)
+                console.log(stdout2)
+                if (stderr2) {
+                    core.setFailed(stderr2)
+                }
+                const { stdout3, stderr3 } = await exec(`git merge -m "Hotfix-helper: auto merge" ${pr.head.ref} --allow-unrelated-histories`)
+                console.log(stdout3)
+                if (stderr3) {
+                    core.setFailed(stderr3)
+                }
+                const { stdout3, stderr3 } = await exec(`git push origin ${pr.base.ref}`)
+                console.log(stdout4)
+                if (stderr4) {
+                    core.setFailed(stderr4)
+                }
             }
             console.log("Ready to close: ", pr.number);
             const { data: closeResult } = await octokit.rest.pulls.update({
