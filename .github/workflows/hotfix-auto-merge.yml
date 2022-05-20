@@ -1,0 +1,25 @@
+name: hotfix-pr-merger
+on:
+  workflow_dispatch:
+
+
+jobs:
+  hotfix-auto-merge-pr:
+    # The type of runner that the job will run on
+    permissions:
+      pull-requests: write
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm install --registry=https://registry.npmjs.org @actions/github
+      - run: npm install @actions/core
+      - run: npm install --registry=https://registry.npmjs.org axios
+      - run: npm install --registry=https://registry.npmjs.org tunnel
+      - run: node -e 'require("./.github/actions/hotfix-helper").autoMergePr()'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_BOTS: ${{ secrets.GLIDE_TM_INFRA_PR_CLASK_BOTS }}
