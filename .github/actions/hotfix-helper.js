@@ -191,6 +191,7 @@ async function autoMergePr() {
         if (existFailure) {
             await processFailurePr(pr)
         } else if (!existUncomplete && !existFailure) {
+            console.log(`Changed files: ${pr.changed_files}`)
             if (pr.changed_files >= 0) {
             console.log("Ready to merge: ", pr.number);
                 exec(`git pull origin ${pr.base.ref}`, execCallback)
