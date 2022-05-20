@@ -230,6 +230,12 @@ async function autoMergePr() {
                 pull_number: pr.number,
                 state: "closed"
             });
+            await octokit.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number: pr.number,
+                labels: ["Hotfix-helper: auto-merged"],
+            });
             console.log(`Notify Slack merge success to ${slackBots}`);
             slackBots.forEach(bot => {
                 sendSlackMsg(bot, `:white_check_mark: Auto Merged <${pr.html_url}|PR ${pr.number}>. :blob-clap::blob-clap::blob-clap:`)
