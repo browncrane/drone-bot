@@ -26,6 +26,7 @@ jobs:
           max_attempts: 3
           retry_on: error
           command: npm install --registry=https://registry.npmjs.org axios
+      - run: npm install @actions/core
       - run: node -e 'require("./.github/actions/hotfix-helper").autoCreatePr()'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
