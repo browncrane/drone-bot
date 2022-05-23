@@ -44,16 +44,6 @@ Check at least 1
 - [x] Did you check if [Monitoring and Rollback Plan](#Monitoring-and-Rollback-Plan) is applicable and fill it if so?
 `;
 
-function execCallback(error, stdout, stderr) {
-    if (error) {
-      console.error(`exec error: ${error}`);
-      core.setFailed(error)
-      process.exit(-1)
-    }
-    console.log(`stdout: ${stdout}`);
-    console.error(`stderr: ${stderr}`);
-  }
-
 function sendSlackMsg(url, msg) {
     axios.post(
         url, 
@@ -192,7 +182,7 @@ async function autoMergePr() {
         if (existFailure) {
             await processFailurePr(pr)
         } else if (!existUncomplete && !existFailure) {
-            data: pr = (await octokit.rest.pulls.get({
+            pr = (await octokit.rest.pulls.get({
                 owner,
                 repo,
                 pull_number: pr.number
@@ -202,25 +192,18 @@ async function autoMergePr() {
                 console.log("Ready to merge: ", pr.number);
                 await exec("git config user.email 'action-bot@action'")
                 await exec("git config user.name 'action-bot'")
-                const { stdout1, stderr1 } = await exec(`git checkout -B ${pr.head.ref} && git fetch origin ${pr.head.ref} && git reset --h origin/${pr.head.ref}`)
-                console.log(stdout1)
-                if (stderr1) {
-                    core.setFailed(stderr1)
-                }
-                const { stdout2, stderr2 } = await exec(`git checkout -B ${pr.base.ref} && git fetch origin ${pr.base.ref} && git reset --h origin/${pr.base.ref}`)
-                console.log(stdout2)
-                if (stderr2) {
-                    core.setFailed(stderr2)
-                }
-                const { stdout3, stderr3 } = await exec(`git merge --no-ff -m "Hotfix-helper: auto merge" ${pr.head.ref} --allow-unrelated-histories`)
-                console.log(stdout3)
-                if (stderr3) {
-                    core.setFailed(stderr3)
-                }
-                const { stdout4, stderr4 } = await exec(`git push origin ${pr.base.ref}`)
-                console.log(stdout4)
-                if (stderr4) {
-                    core.setFailed(stderr4)
+                const { stdout, stderr } = await exec(`\
+                    git checkout -B ${pr.head.ref} && git fetch origin ${pr.head.ref} && git reset --h origin/${pr.head.ref} && \
+                    git checkout -B ${pr.base.ref} && git fetch origin ${pr.base.ref} && git reset --h origin/${pr.base.ref} && \
+                    git checkout ${pr.head.ref} && git rebase ${pr.base.ref} &&
+                    git checkout ${pr.base.ref} && git merge --no-ff -m "Hotfix-helper: auto merge" ${pr.head.ref} --allow-unrelated-histories && \
+                    git push origin ${pr.base.ref}
+                `)
+                console.log(stdout)
+                if (stderr) {
+                    await processFailurePr(pr)
+                    core.setFailed(stderr)
+                    process.exit(-1)
                 }
             }
             console.log("Ready to close: ", pr.number);
