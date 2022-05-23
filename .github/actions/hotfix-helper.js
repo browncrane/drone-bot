@@ -200,7 +200,7 @@ async function autoMergePr() {
                 `)
                 console.log(`out: ${stdout}`)
                 if (stderr && stderr.startsWith("From https://github.com")) {
-                    console.log(`error: ${stderr}`)
+                    console.log(`error: ${stderr} ${typeof stderr}`)
                     await processFailurePr(pr)
                     core.setFailed(stderr)
                     process.exit(-1)
