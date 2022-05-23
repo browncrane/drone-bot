@@ -204,6 +204,7 @@ async function autoMergePr() {
                     await processFailurePr(pr)
                     core.setFailed(stderr)
                     process.exit(-1)
+                    return
                 }
             }
             console.log("Ready to close: ", pr.number);
