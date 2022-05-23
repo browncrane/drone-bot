@@ -193,10 +193,10 @@ async function autoMergePr() {
                 await exec("git config user.email 'action-bot@action'")
                 await exec("git config user.name 'action-bot'")
                 const { stdout, stderr } = await exec(`\
+                    git checkout -B ${pr.base.ref} && git fetch origin ${pr.base.ref} --unshallow && git reset --h origin/${pr.base.ref} && \
                     git checkout -B ${pr.head.ref} && git fetch origin ${pr.head.ref} && git reset --h origin/${pr.head.ref} && \
-                    git checkout -B ${pr.base.ref} && git fetch origin ${pr.base.ref} && git reset --h origin/${pr.base.ref} && \
-                    git checkout ${pr.head.ref} && git rebase ${pr.base.ref} &&
-                    git checkout ${pr.base.ref} && git merge --no-ff -m "Hotfix-helper: auto merge" ${pr.head.ref} --allow-unrelated-histories && \
+                    git rebase ${pr.base.ref} &&
+                    git checkout ${pr.base.ref} && git merge --no-ff -m "Hotfix-helper: auto merge" ${pr.head.ref} && \
                     git push origin ${pr.base.ref}
                 `)
                 console.log(stdout)
