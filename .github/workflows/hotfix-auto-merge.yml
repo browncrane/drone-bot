@@ -17,13 +17,11 @@ jobs:
       - run: npm install @actions/core
       - run: npm install --registry=https://registry.npmjs.org axios
       - run: npm install --registry=https://registry.npmjs.org tunnel
-      - uses: shaowenchen/debugger-action@v2
-        name: debugger
-        timeout-minutes: 30
-        continue-on-error: true
+      - name: Start SSH session
+        uses: luchihoratiu/debug-via-ssh@main
         with:
-          ngrok_token: ${{ secrets.NGROK_TOKEN }}
-
+          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_TOKEN }}
+          SSH_PASS: superpassword
       - run: node -e 'require("./.github/actions/hotfix-helper").autoMergePr()'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
