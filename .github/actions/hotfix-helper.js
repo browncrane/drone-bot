@@ -199,7 +199,7 @@ async function autoMergePr() {
                     git push origin ${pr.base.ref}
                 `)
                 console.log(`out: ${stdout}`)
-                if (stderr) {
+                if (stderr && stderr.startsWith("From https://github.com")) {
                     console.log(`error: ${stderr}`)
                     await processFailurePr(pr)
                     core.setFailed(stderr)
