@@ -198,8 +198,9 @@ async function autoMergePr() {
                     git checkout ${pr.base.ref} && git merge --no-ff -m "Hotfix-helper: auto merge" ${pr.head.ref} && \
                     git push origin ${pr.base.ref}
                 `)
-                console.log(stdout)
+                console.log(`out: ${stdout}`)
                 if (stderr) {
+                    console.log(`error: ${error}`)
                     await processFailurePr(pr)
                     core.setFailed(stderr)
                     process.exit(-1)
