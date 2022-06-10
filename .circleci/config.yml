@@ -24,3 +24,5 @@ workflows:
   say-hello-workflow:
     jobs:
       - say-hello
+    when:
+      equal: [drone-bot, << pipeline.parameters.repository >>]
